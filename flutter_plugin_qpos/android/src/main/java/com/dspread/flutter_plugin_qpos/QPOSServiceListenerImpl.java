@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dspread.xpos.CQPOSService;
 import com.dspread.xpos.QPOSService;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 //"value":"enum.toString"   一律用String 可以json转字符串  暂时如此考虑
 
-public class QPOSServiceListenerImpl implements QPOSService.QPOSServiceListener {
+public class QPOSServiceListenerImpl extends CQPOSService {
 
 
     private static final String Delimiter = "||";
@@ -100,7 +101,6 @@ public class QPOSServiceListenerImpl implements QPOSService.QPOSServiceListener 
         parameters.append(tlv);
         map.put("parameters",parameters.toString());
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
-
     }
 
     @Override
