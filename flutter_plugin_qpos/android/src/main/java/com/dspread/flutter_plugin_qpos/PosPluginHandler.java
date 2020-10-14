@@ -60,7 +60,7 @@ public class PosPluginHandler {
     }
 
     public static void getPosSdkVersion(Result result) {
-        String sdkVersion = mPos.getSdkVersion();
+        String sdkVersion = QPOSService.getSdkVersion();
         TRACE.d(sdkVersion);
         result.success(sdkVersion);
 
@@ -252,5 +252,10 @@ public class PosPluginHandler {
 
     public static void getUpdateProgress(Result result) {
         result.success(mPos.getUpdateProgress());
+    }
+
+    public static void openUart(String path) {
+        mPos.setDeviceAddress(path);
+        mPos.openUart();
     }
 }
