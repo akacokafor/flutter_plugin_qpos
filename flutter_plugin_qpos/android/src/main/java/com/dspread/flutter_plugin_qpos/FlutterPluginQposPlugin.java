@@ -265,6 +265,12 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
           String path = call.argument("path");
           PosPluginHandler.openUart(path);
 
+        }
+        else if (call.method.equals("pinMapSync")) {
+
+            String value = call.argument("value");
+            PosPluginHandler.pinMapSync(value);
+
         } else {
             result.notImplemented();
         }

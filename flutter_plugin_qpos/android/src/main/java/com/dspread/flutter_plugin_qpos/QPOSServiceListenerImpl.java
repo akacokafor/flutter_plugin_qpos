@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dspread.xpos.CQPOSService;
 import com.dspread.xpos.QPOSService;
 import com.dspread.xpos.CQPOSService;
 
@@ -101,7 +102,6 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         parameters.append(tlv);
         map.put("parameters",parameters.toString());
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
-
     }
 
     @Override
@@ -979,6 +979,26 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
     }
 
     @Override
+    public void onQposRequestPinResult(List<String> dataResult, int offlineTime) {
+        TRACE.d("onQposRequestPinResult():");
+
+        Map map = new HashMap();
+        map.put("method","onQposRequestPinResult");
+
+        StringBuffer parameters = new StringBuffer();
+        for (int i = 0; i < dataResult.size(); i++) {
+            parameters.append(dataResult.get(i));
+        }
+
+        StringBuffer append = parameters.append(Delimiter).append(offlineTime);
+        TRACE.d("onQposRequestPinResult():"+ append.toString());
+
+        map.put("parameters", append.toString());
+        PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
+    }
+
+
+    @Override
     public void onGetDevicePubKey(String clearKeys) {
         TRACE.d("onGetDevicePubKey(clearKeys):" + clearKeys);
         Map map = new HashMap();
@@ -1292,6 +1312,19 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         map.put("parameters",parameters.toString());
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
     }
+
+    @Override
+    public void onReturnGetPinInputResult(int num) {
+        TRACE.d("onReturnGetPinInputResult:"+num);
+        Map map = new HashMap();
+        map.put("method","onReturnGetPinInputResult");
+        StringBuffer parameters = new StringBuffer();
+        parameters.append(num);
+        map.put("parameters",parameters.toString());
+        PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
+    }
+
+
 
 }
 

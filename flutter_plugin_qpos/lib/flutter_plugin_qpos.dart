@@ -209,6 +209,18 @@ class FlutterPluginQpos {
 
   }
 
+  void openUart(String s) async{
+    Map<String, String> params = Map<String, String>();
+    params['path'] = s;
+    await _methodChannel.invokeMethod('openUart',params);
+  }
+
+  void pinMapSync(value) async{
+    Map<String, String> params = Map<String, String>();
+    params['value'] = value;
+    await _methodChannel.invokeMethod('pinMapSync',params);
+  }
+
 
 
 

@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.toolsgit .build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
 }
 rootProject.allprojects {
@@ -27,20 +27,12 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-
-    signingConfigs {
-        debug {
-            storeFile file('app.keystore')
-            storePassword 'dspread'
-            keyAlias = 'gundam_wing'
-            keyPassword 'dspread'
-        }
-    }
 }
 
 dependencies {
     implementation files('libs/bcprov-jdk15on-160.jar')
-    implementation files('libs/dspread_android_pos_sdk_3.1.3_debug_202010141117.jar')
+    implementation files('libs/dspread_android_pos_sdk_3.1.4.jar')
     implementation files('libs/sun.misc.BASE64Decoder.jar')
     implementation files('libs/fastjson-1.2.62.jar')
+    implementation files('libs/ledmanager.jar')
 }

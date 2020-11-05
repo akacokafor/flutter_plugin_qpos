@@ -6,8 +6,10 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin_qpos/flutter_plugin_qpos.dart';
+import 'package:flutter_plugin_qpos_example/keyboard/view_keyboard.dart';
 
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:toast/toast.dart';
 
 import '../Utils.dart';
 //import 'package:permission_handler/permission_handler.dart';
@@ -42,6 +44,7 @@ class _MyAppState extends State<PluginPage> {
   String trasactionData = "trasactionData";
   StreamSubscription _subscription;
   List<String> items;
+  int numPinField;
   var scanFinish = 0;
   String _mAddress;
   var _updateValue;
@@ -77,7 +80,6 @@ class _MyAppState extends State<PluginPage> {
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      _flutterPluginQpos.init(communicationMode[10]);
       platformVersion = await _flutterPluginQpos.posSdkVersion;
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
@@ -98,6 +100,7 @@ class _MyAppState extends State<PluginPage> {
     Widget buttonSection = new Container(
       child: new Row(
         children: [
+
           RaisedButton(
             onPressed: () async {
               setState(() {
@@ -206,6 +209,13 @@ class _MyAppState extends State<PluginPage> {
           ),
           body: new ListView(
             children: [
+
+              RaisedButton(
+                onPressed: () async {
+                  openUart();
+                },
+                child: Text("open uart"),
+              ),
               buttonSection,
               textSection,
               btnMenuSection,
@@ -244,6 +254,10 @@ class _MyAppState extends State<PluginPage> {
   Future<void> connectToDevice(String item) async {
     List<String> addrs = item.split("//");
     _mAddress = addrs[1];
+    setState(() {
+      scanFinish = 0;
+      items = null;
+    });
     await _flutterPluginQpos.connectBluetoothDevice(addrs[1]);
   }
 
@@ -297,7 +311,9 @@ class _MyAppState extends State<PluginPage> {
         break;
       case 'onRequestSetPin':
         _flutterPluginQpos.sendPin("1111");
-
+        break;
+      case 'onQposRequestPinResult':
+        _showKeyboard(context,parameters);
         break;
       case 'onGetPosComm':
         break;
@@ -536,6 +552,12 @@ class _MyAppState extends State<PluginPage> {
         break;
       case 'onGetKeyCheckValue':
         break;
+      case 'onReturnGetPinInputResult':
+        setState(() {
+          numPinField = int.parse(parameters);
+        });
+
+        break;
       default:
         throw ArgumentError('error');
     }
@@ -543,8 +565,14 @@ class _MyAppState extends State<PluginPage> {
 
 
   void selectDevice() {
-//    _flutterPluginQpos.stopScanQPos2Mode();
+    _flutterPluginQpos.init(communicationMode[10]);
+
     _flutterPluginQpos.scanQPos2Mode(20);
+  }
+
+  void openUart() {
+    _flutterPluginQpos.init(communicationMode[2]);
+    _flutterPluginQpos.openUart("/dev/ttyS1");
   }
 
   Widget _getListDate(BuildContext context, int position) {
@@ -683,5 +711,58 @@ class _MyAppState extends State<PluginPage> {
         break;
     }
   }
+  void _showKeyboard(BuildContext context, String parameters) {
+    print("_showKeyboard:"+parameters);
+
+    List<String> keyBoardList = new List();
+    var paras = parameters.split("||");
+    String keyMap = paras[0];
+
+    for(int i = 0; i< keyMap.length;i+=2 ){
+      String keyValue = keyMap.substring(i,i+2);
+      print("POS"+keyValue);
+      keyBoardList.add(int.parse(keyValue,radix: 16).toString());
+    }
+
+    for(int i=0;i<keyBoardList.length;i++){
+      if(keyBoardList[i] == "13"){
+        keyBoardList[i] = "cancel";
+      }else if(keyBoardList[i] == "14"){
+        keyBoardList[i] = "del";
+      }
+      else if(keyBoardList[i] == "15"){
+        keyBoardList[i] = "confirm";
+      }
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (builder) {
+        return CustomKeyboard(
+          pwdField: numPinField,
+          initEvent: (value) {
+            print("pinMapSync:"+value);
+             _flutterPluginQpos.pinMapSync(value);
+          },
+          callback: (keyEvent) {
+            if (keyEvent.isClose()) {
+              print("POS keyEvent.isClose()");
+              Navigator.pop(context);
+            }
+          },
+          keyList: keyBoardList,
+          keyHeight: 46,
+          autoBack: false,
+          onResult: (data) {
+            Toast.show("POS onResult" + data, context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+          },
+        );
+      },
+    );
+  }
+
 }
 

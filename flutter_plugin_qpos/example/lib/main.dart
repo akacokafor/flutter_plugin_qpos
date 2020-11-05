@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/PluginPage.dart';
+import 'pages/SecondScreen.dart';
 
 
 void main() => runApp(MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         //注册路由表
         routes: {
           "/": (context) => PluginPage(),
+          // '/second': (context) => SecondScreen(),
          },
         onGenerateRoute: (RouteSettings settings) {
           String routeName = settings.name;

@@ -48,6 +48,15 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file('app.keystore')
+            storePassword 'dspread'
+            keyAlias = 'gundam_wing'
+            keyPassword 'dspread'
+        }
+    }
 }
 
 flutter {
