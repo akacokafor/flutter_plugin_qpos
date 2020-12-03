@@ -565,10 +565,10 @@ class _MyAppState extends State<PluginPage> {
 
 
   void selectDevice() {
-    _flutterPluginQpos.requestPermission(communicationMode[10]);
-    // _flutterPluginQpos.init(communicationMode[10]);
-    //
-    // _flutterPluginQpos.scanQPos2Mode(20);
+    // _flutterPluginQpos.requestPermission(communicationMode[10]);
+    _flutterPluginQpos.init(communicationMode[10]);
+
+    _flutterPluginQpos.scanQPos2Mode(20);
   }
 
   void openUart() {

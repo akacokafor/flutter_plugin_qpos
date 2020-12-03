@@ -66,16 +66,16 @@ class FlutterPluginQpos {
     Map<PermissionGroup, PermissionStatus> permissions =
     await PermissionHandler().requestPermissions([PermissionGroup.location]);
 
-    // 申请结果
+    // request result
     PermissionStatus permission = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
 
     if (permission == PermissionStatus.granted) {
-      print("权限申请通过");
+      print("granted");
       init(mode);
       scanQPos2Mode(20);
     } else {
-      print("权限申请通过");
+      print("no permission");
     }
   }
 

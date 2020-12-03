@@ -17,7 +17,7 @@ dependencies:
 #  permission_handler: ^3.0.0
 #  fluttertoast: ^2.1.1
   #  权限
-  permission_handler: ^3.2.0
+  permission_handler: ^3.3.0
 
 dev_dependencies:
   flutter_test:
