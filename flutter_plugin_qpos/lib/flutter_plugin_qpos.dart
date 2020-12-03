@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show visibleForTesting;
-
+import 'package:permission_handler/permission_handler.dart';
 
 
 class FlutterPluginQpos {
@@ -60,6 +60,25 @@ class FlutterPluginQpos {
     params['CommunicationMode'] = mode;
     _methodChannel.invokeMethod('initPos', params);
   }
+
+  Future requestPermission(String mode) async {
+    // request permission
+    Map<PermissionGroup, PermissionStatus> permissions =
+    await PermissionHandler().requestPermissions([PermissionGroup.location]);
+
+    // 申请结果
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.location);
+
+    if (permission == PermissionStatus.granted) {
+      print("权限申请通过");
+      init(mode);
+      scanQPos2Mode(20);
+    } else {
+      print("权限申请通过");
+    }
+  }
+
 
 
     Future<String> get posSdkVersion async{

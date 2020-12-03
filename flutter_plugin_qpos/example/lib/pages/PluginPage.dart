@@ -422,7 +422,7 @@ class _MyAppState extends State<PluginPage> {
       case 'onUpdatePosFirmwareResult':
         concelFlag = true;
         if (pr.isShowing()) {
-          pr.dismiss();
+          pr.hide();
         }
         break;
       case 'onUpdatePosFirmwareProcessChanged':
@@ -565,9 +565,10 @@ class _MyAppState extends State<PluginPage> {
 
 
   void selectDevice() {
-    _flutterPluginQpos.init(communicationMode[10]);
-
-    _flutterPluginQpos.scanQPos2Mode(20);
+    _flutterPluginQpos.requestPermission(communicationMode[10]);
+    // _flutterPluginQpos.init(communicationMode[10]);
+    //
+    // _flutterPluginQpos.scanQPos2Mode(20);
   }
 
   void openUart() {
@@ -627,7 +628,7 @@ class _MyAppState extends State<PluginPage> {
 
   operatUpdateProcess(ByteData value, BuildContext context) async {
     if(pr != null && pr.isShowing())
-      pr.dismiss();
+      pr.hide();
     pr = new ProgressDialog(context, type: ProgressDialogType.Download);
     pr.style(message: 'Update Firmware...',);
     await pr.show();

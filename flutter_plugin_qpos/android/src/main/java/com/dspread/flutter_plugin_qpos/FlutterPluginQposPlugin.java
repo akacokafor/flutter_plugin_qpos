@@ -13,10 +13,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Hashtable;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
@@ -46,7 +48,7 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
     /**
      * Plugin registration.
      */
-    public static void registerWith(PluginRegistry.Registrar registrar) {
+    public static void registerWith(final PluginRegistry.Registrar registrar) {
 //    final FlutterPluginQposPlugin instance = new FlutterPluginQposPlugin();
 //    instance.onAttachedToEngine(registrar.context(), registrar.messenger());
     }
@@ -96,8 +98,7 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
             PosPluginHandler.getPosSdkVersion(result);
         } else if (call.method.equals("scanQPos2Mode")) {
             TRACE.d("scanQPos2Mode");
-            if (!checkBluePermision())
-                return;
+//            checkBluePermision();
 //      int scanTime = call.argument("scanTime");
             PosPluginHandler.scanQPos2Mode(20);
         } else if (call.method.equals("startScanQposBLE")) {
@@ -108,8 +109,7 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
             PosPluginHandler.clearBluetoothBuffer();
         } else if (call.method.equals("connectBluetoothDevice")) {
             TRACE.d("connectBluetoothDevice");
-            if (!checkBluePermision())
-                return;
+//            checkBluePermision();
             String address = call.argument("bluetooth_addr");
             PosPluginHandler.connectBluetoothDevice(true, 25, address);
         } else if (call.method.equals("disconnectBT")) {
@@ -263,11 +263,9 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
         } else {
             result.notImplemented();
         }
-
-
     }
 
-    private boolean checkBluePermision() {
+    private void checkBluePermision() {
         TRACE.d("checkBluePermision");
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (!adapter.isEnabled()) {//表示蓝牙不可用
@@ -276,7 +274,7 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
             enableBtIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             mContext.startActivity(enableBtIntent);
-            return false;
+            return;
         }
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         boolean ok = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -284,22 +282,20 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
             if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Log.e("POS_SDK", "没有权限");
                 ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 1111);
-
-                return false;
+//                return false;
             } else {
-                return true;
+                PosPluginHandler.scanQPos2Mode(20);
+//                return true;
             }
         } else {
-            return false;
+//            return false;
         }
     }
-
 
     @Override
     public void onListen(Object arguments, EventChannel.EventSink events) {
         TRACE.d("onListen");
         PosPluginHandler.initEvenvSender(events, arguments);
-
     }
 
     @Override
