@@ -52,7 +52,7 @@ public class PosPluginHandler {
         mPos = QPOSService.getInstance(mode1);
         mMode = mode1.ordinal();
         mContext = context;
-        mPos.setD20Trade(true);
+//        mPos.setD20Trade(true);
         mPos.setConext(context);
         //通过handler处理，监听MyPosListener，实现QposService的接口，（回调接口）
         Handler handler = new Handler(Looper.myLooper());

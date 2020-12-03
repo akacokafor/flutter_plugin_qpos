@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -35,4 +35,5 @@ dependencies {
     implementation files('libs/sun.misc.BASE64Decoder.jar')
     implementation files('libs/fastjson-1.2.62.jar')
     implementation files('libs/ledmanager.jar')
+    implementation 'androidx.core:core:1.1.0'
 }
