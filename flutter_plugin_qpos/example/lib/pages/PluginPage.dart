@@ -556,18 +556,15 @@ class _MyAppState extends State<PluginPage> {
         setState(() {
           numPinField = int.parse(parameters);
         });
-
         break;
       default:
         throw ArgumentError('error');
     }
   }
 
-
   void selectDevice() {
     // _flutterPluginQpos.requestPermission(communicationMode[10]);
     _flutterPluginQpos.init(communicationMode[10]);
-
     _flutterPluginQpos.scanQPos2Mode(20);
   }
 
