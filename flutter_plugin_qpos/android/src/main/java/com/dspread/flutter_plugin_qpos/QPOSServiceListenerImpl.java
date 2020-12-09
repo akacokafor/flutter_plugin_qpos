@@ -806,20 +806,14 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         Map map = new HashMap();
         map.put("method","onDeviceFound");
         StringBuffer parameters = new StringBuffer();
-        if (arg0.getName()!=null){
-            if (arg0.getName().startsWith("MPOS")){
-                TRACE.d("onDeviceFound(BluetoothDevice ):" + arg0.getName());
-                parameters.append(arg0.getName());
-                parameters.append("//");
-                parameters.append(arg0.toString());
-                parameters.append("//");
-                parameters.append(arg0.getBondState());
-                map.put("parameters",parameters.toString());
-                PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
-            }else{
-                return;
-            }
-        }
+        TRACE.d("onDeviceFound(BluetoothDevice ):" + arg0.getName());
+        parameters.append(arg0.getName());
+        parameters.append("//");
+        parameters.append(arg0.toString());
+        parameters.append("//");
+        parameters.append(arg0.getBondState());
+        map.put("parameters",parameters.toString());
+        PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
     }
 
 
