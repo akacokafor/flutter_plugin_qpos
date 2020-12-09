@@ -2,6 +2,7 @@ package com.dspread.flutter_plugin_qpos;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dspread.xpos.CQPOSService;
@@ -801,15 +802,24 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
     @Override
     public void onDeviceFound(BluetoothDevice arg0) {
         // TODO Auto-generated method stub
-            TRACE.d("onDeviceFound(BluetoothDevice arg0):" + arg0.getName()+":"+arg0.toString());
+        TRACE.d("onDeviceFound(BluetoothDevice arg0):" + arg0.getName()+" : "+arg0.toString());
         Map map = new HashMap();
         map.put("method","onDeviceFound");
         StringBuffer parameters = new StringBuffer();
-        parameters.append(arg0.getName());
-        parameters.append("//");
-        parameters.append(arg0.toString());
-        map.put("parameters",parameters.toString());
-        PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
+        if (arg0.getName()!=null){
+            if (arg0.getName().startsWith("MPOS")){
+                TRACE.d("onDeviceFound(BluetoothDevice ):" + arg0.getName());
+                parameters.append(arg0.getName());
+                parameters.append("//");
+                parameters.append(arg0.toString());
+                parameters.append("//");
+                parameters.append(arg0.getBondState());
+                map.put("parameters",parameters.toString());
+                PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
+            }else{
+                return;
+            }
+        }
     }
 
 
