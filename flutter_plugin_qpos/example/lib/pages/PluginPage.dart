@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin_qpos/flutter_plugin_qpos.dart';
+import 'package:flutter_plugin_qpos_example/CustomerModel.dart';
 import 'package:flutter_plugin_qpos_example/keyboard/view_keyboard.dart';
 
 import 'package:progress_dialog/progress_dialog.dart';
@@ -275,10 +276,13 @@ class _MyAppState extends State<PluginPage> {
   }
 
   void parasListener(String datas) {
-    Map map = new Map<String, dynamic>.from(json.decode(datas));
-    String method = map["method"];
+    //Map map = new Map<String, dynamic>.from(json.decode(datas));
+    CustomerModel testModel = CustomerModel.fromJson(json.decode(datas));
+    //String method = map["method"];
+    String method = testModel.method;
     List<String> paras;
-    String parameters = map["parameters"];
+    //String parameters = map["parameters"];
+    String parameters = testModel.parameters;
     if (parameters != null && parameters.length > 0) {
       paras = parameters.split("||");
     }
