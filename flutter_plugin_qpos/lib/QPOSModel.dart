@@ -1,10 +1,10 @@
-class CustomerModel {
+class QPOSModel {
   String method;
   String parameters;
 
-  CustomerModel({this.method, this.parameters});
+  QPOSModel({this.method, this.parameters});
 
-  CustomerModel.fromJson(Map<String, dynamic> json) {
+  QPOSModel.fromJson(Map<String, dynamic> json) {
     method = json['method'];
     parameters = json['parameters'];
   }

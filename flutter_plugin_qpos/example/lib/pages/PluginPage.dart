@@ -6,7 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin_qpos/flutter_plugin_qpos.dart';
-import 'package:flutter_plugin_qpos_example/CustomerModel.dart';
+import 'package:flutter_plugin_qpos/QPOSModel.dart';
 import 'package:flutter_plugin_qpos_example/keyboard/view_keyboard.dart';
 
 import 'package:progress_dialog/progress_dialog.dart';
@@ -42,7 +42,7 @@ class _MyAppState extends State<PluginPage> {
   FlutterPluginQpos _flutterPluginQpos = FlutterPluginQpos();
   String _platformVersion = 'Unknown';
 //  String display = "display";
-  String trasactionData = "trasactionData";
+  QPOSModel trasactionData;
   StreamSubscription _subscription;
   List<String> items;
   int numPinField;
@@ -58,7 +58,7 @@ class _MyAppState extends State<PluginPage> {
     super.initState();
     initPlatformState();
     _subscription =
-        _flutterPluginQpos.onPosListenerCalled.listen((String datas) {
+        _flutterPluginQpos.onPosListenerCalled.listen((QPOSModel datas) {
       parasListener(datas);
       setState(() {
         trasactionData = datas;
@@ -275,14 +275,14 @@ class _MyAppState extends State<PluginPage> {
     _flutterPluginQpos.doTrade(params);
   }
 
-  void parasListener(String datas) {
+  void parasListener(QPOSModel datas) {
     //Map map = new Map<String, dynamic>.from(json.decode(datas));
-    CustomerModel testModel = CustomerModel.fromJson(json.decode(datas));
+    // CustomerModel testModel = CustomerModel.fromJson(json.decode(datas));
     //String method = map["method"];
-    String method = testModel.method;
+    String method = datas.method;
     List<String> paras;
     //String parameters = map["parameters"];
-    String parameters = testModel.parameters;
+    String parameters = datas.parameters;
     if (parameters != null && parameters.length > 0) {
       paras = parameters.split("||");
     }
@@ -767,4 +767,5 @@ class _MyAppState extends State<PluginPage> {
   }
 
 }
+
 

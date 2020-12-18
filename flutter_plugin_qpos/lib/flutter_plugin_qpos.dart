@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_plugin_qpos/QPOSModel.dart';
 import 'package:meta/meta.dart' show visibleForTesting;
 import 'package:permission_handler/permission_handler.dart';
 
@@ -35,9 +36,9 @@ class FlutterPluginQpos {
 
 //
 //  /// Fires whenever the battery state changes.
-  Stream<String> _onPosListenerCalled;
+  Stream<QPOSModel> _onPosListenerCalled;
 
-  Stream<String> get onPosListenerCalled {
+  Stream<QPOSModel> get onPosListenerCalled {
     if (_onPosListenerCalled == null) {
       _onPosListenerCalled = _eventChannel
           .receiveBroadcastStream()
@@ -48,9 +49,10 @@ class FlutterPluginQpos {
 
 
 
-  String _parsePosListenerCall(String state) {
+  QPOSModel _parsePosListenerCall(String state) {
     //    {"parameters":"","method":"onRequestWaitingUser"}
-    return state;
+    QPOSModel qposModel = QPOSModel.fromJson(json.decode(state));
+    return qposModel;
   }
 
 
