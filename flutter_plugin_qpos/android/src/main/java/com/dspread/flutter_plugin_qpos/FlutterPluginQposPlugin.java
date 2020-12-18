@@ -19,6 +19,7 @@ import java.util.Hashtable;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
@@ -29,7 +30,7 @@ import io.flutter.plugin.common.PluginRegistry;
 /**
  * FlutterPluginQposPlugin
  */
-public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler, EventChannel.StreamHandler {
+public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler, EventChannel.StreamHandler,ActivityAware {
 
     private Context mContext;
     private MethodChannel methodChannel;
@@ -279,7 +280,7 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         boolean ok = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (ok) {//开了定位服务
-            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Log.e("POS_SDK", "没有权限");
                 ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 1111);
 //                return false;
@@ -305,4 +306,23 @@ public class FlutterPluginQposPlugin implements FlutterPlugin, MethodCallHandler
 
     }
 
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        mActivity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+
+    }
 }
