@@ -578,7 +578,7 @@ class _MyAppState extends State<PluginPage> {
   }
 
   Widget _getListDate(BuildContext context, int position) {
-    if (items != null && items[position].startsWith("MPOS")) {
+    if (items != null) {
       return new FlatButton(
           onPressed: () => connectToDevice(items[position]),
           child: new Text("text ${items[position]}"));
