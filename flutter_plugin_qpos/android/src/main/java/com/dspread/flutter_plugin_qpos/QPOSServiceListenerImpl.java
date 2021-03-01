@@ -922,10 +922,8 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
 }
 
-    @Override
     public void onEncryptData(String arg0) {
-
-            TRACE.d("onEncryptData(String arg0) :" + arg0);
+        TRACE.d("onEncryptData(String arg0) :" + arg0);
         Map map = new HashMap();
         map.put("method","onEncryptData");
         StringBuffer parameters = new StringBuffer();
@@ -1013,7 +1011,6 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
     }
 
-    @Override
     public void onSetPosBlePinCode(boolean b) {
         TRACE.d("onSetPosBlePinCode(b):" + b);
         Map map = new HashMap();
@@ -1023,9 +1020,6 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         map.put("parameters",parameters.toString());
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
     }
-
-
-
 
     @Override
     public void onTradeCancelled() {

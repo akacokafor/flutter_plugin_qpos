@@ -23,6 +23,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -31,7 +32,7 @@ android {
 
 dependencies {
     implementation files('libs/bcprov-jdk15on-160.jar')
-    implementation files('libs/dspread_android_pos_sdk_3.1.4.jar')
+    implementation files('libs/dspread_pos_sdk_3.2.7.jar')
     implementation files('libs/sun.misc.BASE64Decoder.jar')
     implementation files('libs/fastjson-1.2.62.jar')
     implementation files('libs/ledmanager.jar')
