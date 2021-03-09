@@ -167,10 +167,6 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
     }
 
-
-
-
-
     @Override
     public void onRequestTime() {
         TRACE.d("onRequestTime");
@@ -1302,11 +1298,11 @@ public class QPOSServiceListenerImpl extends CQPOSService   {
     @Override
     public void onError(QPOSService.Error error) {
 
-            TRACE.d("onError:"+error);
+        TRACE.d("onError:"+error);
         Map map = new HashMap();
         map.put("method","onError");
         StringBuffer parameters = new StringBuffer();
-        parameters.append(error.toString());
+        parameters.append(error.name());
         map.put("parameters",parameters.toString());
         PosPluginHandler.mEvents.success(JSONObject.toJSONString(map));
     }

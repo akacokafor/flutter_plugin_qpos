@@ -55,8 +55,6 @@ class FlutterPluginQpos {
     return qposModel;
   }
 
-
-
      init(String mode) {
     Map<String, String> params = Map<String, String>();
     params['CommunicationMode'] = mode;
@@ -138,10 +136,9 @@ class FlutterPluginQpos {
 
   }
 
-   getNFCBatchData() async{
-    Map<String, String> map =  await _methodChannel.invokeMethod('getNFCBatchData');
-    return map;
-
+  Future<HashMap> getNFCBatchData() async{
+     Future<HashMap> map =  await _methodChannel.invokeMethod('getNFCBatchData');
+     return map;
   }
 
   void sendPin(String s) async{

@@ -41,7 +41,7 @@ final communicationMode = const [
 class _MyAppState extends State<PluginPage> {
   FlutterPluginQpos _flutterPluginQpos = FlutterPluginQpos();
   String _platformVersion = 'Unknown';
-//  String display = "display";
+  String display = "";
   QPOSModel trasactionData;
   StreamSubscription _subscription;
   List<String> items;
@@ -203,6 +203,16 @@ class _MyAppState extends State<PluginPage> {
       ),
     );
 
+    Widget textResultSection = new Container(
+      child: new Column(
+        children: [
+          Text(
+            '$display',
+          ),
+        ],
+      ),
+    );
+
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
@@ -222,6 +232,8 @@ class _MyAppState extends State<PluginPage> {
               btnMenuSection,
               btnMenuDeviceInfoSection,
               getListSection(),
+              textResultSection,
+
 //              getupdateSection()
             ],
             padding: EdgeInsets.all(2.0),
@@ -289,8 +301,14 @@ class _MyAppState extends State<PluginPage> {
 
     switch (method) {
       case 'onRequestTransactionResult':
+        setState(() {
+          display = parameters;
+        });
         break;
       case 'onRequestWaitingUser':
+        setState(() {
+          display = "Please insert/swipe/tap card";
+        });
         break;
       case 'onReturnConverEncryptedBlockFormat':
         break;
@@ -301,8 +319,14 @@ class _MyAppState extends State<PluginPage> {
       case 'onEncryptData':
         break;
       case 'onRequestDisplay':
+        setState(() {
+          display = parameters;
+        });
         break;
       case 'onQposInfoResult':
+        setState(() {
+          display = parameters;
+        });
         break;
       case 'onCbcMacResult':
         break;
@@ -314,6 +338,9 @@ class _MyAppState extends State<PluginPage> {
       case 'onTradeCancelled':
         break;
       case 'onRequestSetPin':
+        setState(() {
+          display = "Please input pin on your app";
+        });
         _flutterPluginQpos.sendPin("1111");
         break;
       case 'onQposRequestPinResult':
@@ -344,12 +371,22 @@ class _MyAppState extends State<PluginPage> {
         }
 
         if (Utils.equals(paras[0], "NFC_ONLINE") || Utils.equals(paras[0], "NFC_OFFLINE")) {
-          _flutterPluginQpos.getNFCBatchData();
+          Future<HashMap<String, String>> map = _flutterPluginQpos.getNFCBatchData();
+          setState(() {
+            display = map.toString();
+          });
+        }else if(Utils.equals(paras[0], "MCR")){
+          setState(() {
+            display = paras[1];
+          });
         }
         break;
       case 'onQposIdResult':
         break;
       case 'onError':
+        setState(() {
+          display = parameters;
+        });
         break;
       case 'onReturnRSAResult':
         break;
@@ -384,6 +421,9 @@ class _MyAppState extends State<PluginPage> {
       case 'onGetInputAmountResult':
         break;
       case 'onRequestQposDisconnected':
+        setState(() {
+          display = "device disconnected!";
+        });
         break;
       case 'onReturnPowerOnIccResult':
         break;
@@ -422,6 +462,9 @@ class _MyAppState extends State<PluginPage> {
       case 'onLcdShowCustomDisplay':
         break;
       case 'onRequestQposConnected':
+        setState(() {
+          display = "device connected!";
+        });
         break;
       case 'onUpdatePosFirmwareResult':
         concelFlag = true;
