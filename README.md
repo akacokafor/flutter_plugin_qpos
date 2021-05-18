@@ -1,7 +1,14 @@
-Import the Flutter demo steps:
-#Android
-1.Open the Android studio, click the “open" button and select the flutter demo 
-2.Select the flutter_plugin_qpos folder to import
-3.Click the green run button to run the main.dart file
-4.If want to update the android demo, you can click the "open" button
-5.to select the flutter_plugin_qpos/example/android to import
+# flutter_plugin_qpos
+
+A new Flutter plugin.
+
+## Getting Started
+
+This project is a starting point for a Flutter
+[plug-in package](https://flutter.dev/developing-packages/),
+a specialized package that includes platform-specific implementation code for
+Android and/or iOS.
+
+For help getting started with Flutter, view our 
+[online documentation](https://flutter.dev/docs), which offers tutorials, 
+samples, guidance on mobile development, and a full API reference.
